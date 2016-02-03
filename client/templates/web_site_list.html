@@ -1,0 +1,9 @@
+<template name="website_list">
+    <div class="panel-group">
+        {{#each websites}}
+            <div class="panel panel-default">
+                {{>website_item}}
+            </div>
+        {{/each}}
+    </div>
+</template>

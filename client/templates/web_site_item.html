@@ -1,0 +1,17 @@
+<template name="website_item">
+        <div class="panel-body">
+            <h3>
+                <a href="{{url}}">{{title}}</a>
+            </h3>
+            {{description}}
+        </div>
+        <div class="panel-footer">
+            <a href="#" class="btn btn-default js-upvote">
+                <span class="glyphicon glyphicon-arrow-up" aria-hidden="false"></span>
+            </a>
+            <span>{{votes}}</span>
+            <a href="#" class="btn btn-default js-downvote">
+                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+            </a>
+        </div>
+</template>
