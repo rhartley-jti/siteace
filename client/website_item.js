@@ -1,15 +1,6 @@
 Template.website_item.helpers({
-	totalVoteCount: function() {
-		return this.upVotes.length - this.downVotes.length;
-	},
-	hasUpVotes: function() {
-		return this.upVotes.length > 0;
-	},
 	upVoteCount: function() {
 		return this.upVotes.length;
-	},
-	hasDownVotes: function() {
-		return this.downVotes.length > 0;
 	},
 	downVoteCount: function() {
 		return this.downVotes.length;
