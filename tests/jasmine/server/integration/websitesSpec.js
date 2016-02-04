@@ -57,6 +57,7 @@ describe('websites', function() {
 				wasRemovedFromDownVotes = true;
 			}
 		});
+		spyOn(Websites, "findOne").and.returnValue({upVotes: []});
 		const context = { userId: expectedUserId };
 
 		Websites.methods.upVote._execute(context, expectedId);
@@ -70,6 +71,21 @@ describe('websites', function() {
 		expect(function() {
 			Websites.methods.upVote._execute(context);
 		}).toThrowError(Meteor.Error, "Must be logged in to vote [Websites.methods.upVote.unauthorized]");
+	});
+
+	it("up voting when already there removes up vote", function() {
+		const userId = "15";
+		let wasRemovedFromUpVotes = false;
+		spyOn(Websites, "update").and.callFake((query, operation) => {
+			if (operation.$pull) {
+				wasRemovedFromUpVotes = operation.$pull.upVotes === userId;
+			}
+		});
+		spyOn(Websites, "findOne").and.returnValue({upVotes: [userId]});
+		const context = { userId: userId }
+
+		Websites.methods.upVote._execute(context, userId);
+		expect(wasRemovedFromUpVotes).toBe(true);
 	});
 
 	it("allows logged in user to down vote a site", function() {
@@ -88,6 +104,7 @@ describe('websites', function() {
 				wasRemovedFromUpVotes = true;
 			}
 		});
+		spyOn(Websites, "findOne").and.returnValue({downVotes: []});
 		const context = { userId: expectedUserId };
 
 		Websites.methods.downVote._execute(context, expectedId);
@@ -95,6 +112,21 @@ describe('websites', function() {
 		expect(wasAddedToDownVotes).toBe(true);
         expect(wasRemovedFromUpVotes).toBe(true);
 	});
+
+	it("down voting when already there removes down vote", function() {
+    		const userId = "18";
+    		let wasRemovedFromUpVotes = false;
+    		spyOn(Websites, "update").and.callFake((query, operation) => {
+    			if (operation.$pull) {
+    				wasRemovedFromUpVotes = operation.$pull.downVotes === userId;
+    			}
+    		});
+    		spyOn(Websites, "findOne").and.returnValue({downVotes: [userId]});
+    		const context = { userId: userId }
+
+    		Websites.methods.downVote._execute(context, userId);
+    		expect(wasRemovedFromUpVotes).toBe(true);
+    	});
 
 	it("down voting throws exception if user is not logged in", function() {
 		const context = {};  //No userId in context simulates anonymous user
