@@ -25,3 +25,5 @@ aldeed:simple-schema
 mdg:validated-method
 reactive-dict
 momentjs:moment
+iron:router
+arkham:comments-ui

@@ -1,0 +1,19 @@
+<template name="website_details">
+    <div class="container">
+        <a href="/" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"> Back</span></a>
+    </div>
+    <br />
+    <div class="container">
+        <div class="jumbotron">
+            <h2><a href="{{url}}" target="_blank">{{title}}</a></h2>
+            <p>{{description}}</p>
+        </div>
+    </div>
+    <div class="container">
+        {{> vote_control}}
+        {{> added_date}}
+    </div>
+    <div class="container">
+        {{> commentsBox id=_id}}
+    </div>
+</template>

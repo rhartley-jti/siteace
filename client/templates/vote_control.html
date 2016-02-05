@@ -1,0 +1,18 @@
+<template name="vote_control">
+    {{#if canVote}}
+        <div class="btn {{#if iUpVoted}}btn-success{{else}}btn-default{{/if}} js-upvote">
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="false"></span>
+            {{upVoteCount}}
+        </div>
+    {{/if}}
+    {{#if canVote}}
+        <div class="btn {{#if iDownVoted}}btn-danger{{else}}btn-default{{/if}} js-downvote">
+            <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
+            {{downVoteCount}}
+        </div>
+    {{/if}}
+    <div class="label label-pill label-primary">
+        <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>
+        {{rank}}
+    </div>
+</template>
