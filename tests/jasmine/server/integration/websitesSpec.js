@@ -42,97 +42,118 @@ describe('websites', function() {
 	});
 
 	it("allows logged in user to up vote a site", function() {
-		const expectedId = "15";
-		const expectedUserId = "1-22";
+		const websiteId = "15";
+		const userId = "1-22";
 		let wasAddedToUpVotes = false;
-		let wasRemovedFromDownVotes = false;
 		spyOn(Websites, "update").and.callFake((query, operation) => {
-			expect(query._id).toBe(expectedId);
-			if (operation.$addToSet) {
-                expect(operation.$addToSet.upVotes).toBe(expectedUserId);
-                wasAddedToUpVotes = true;
-			}
-			if (operation.$pull) {
-				expect(operation.$pull.downVotes).toBe(expectedUserId);
-				wasRemovedFromDownVotes = true;
-			}
+			wasAddedToUpVotes = query._id === websiteId
+				&& operation.$addToSet
+				&& operation.$addToSet.upVotes === userId;
 		});
-		spyOn(Websites, "findOne").and.returnValue({upVotes: []});
-		const context = { userId: expectedUserId };
+		const context = { userId: userId };
 
-		Websites.methods.upVote._execute(context, expectedId);
+		Websites.methods.addUpVote._execute(context, websiteId);
 
 		expect(wasAddedToUpVotes).toBe(true);
-		expect(wasRemovedFromDownVotes).toBe(true);
 	});
 
-	it("up voting throws exception if user is not logged in", function() {
+	it("adding up vote throws exception if user is not logged in", function() {
 		const context = {};  //No userId in context simulates anonymous user
 		expect(function() {
-			Websites.methods.upVote._execute(context);
-		}).toThrowError(Meteor.Error, "Must be logged in to vote [Websites.methods.upVote.unauthorized]");
+			Websites.methods.addUpVote._execute(context);
+		}).toThrowError(Meteor.Error, "Must be logged in to vote [Websites.methods.unauthorized]");
 	});
 
-	it("up voting when already there removes up vote", function() {
+	it("allows logged in user to remove up vote on a site", function() {
+		const websiteId = "29";
 		const userId = "15";
 		let wasRemovedFromUpVotes = false;
 		spyOn(Websites, "update").and.callFake((query, operation) => {
-			if (operation.$pull) {
-				wasRemovedFromUpVotes = operation.$pull.upVotes === userId;
-			}
+			wasRemovedFromUpVotes = query._id === websiteId
+				&& operation.$pull
+				&& operation.$pull.upVotes === userId;
 		});
-		spyOn(Websites, "findOne").and.returnValue({upVotes: [userId]});
 		const context = { userId: userId }
 
-		Websites.methods.upVote._execute(context, userId);
+		Websites.methods.removeUpVote._execute(context, websiteId);
+
 		expect(wasRemovedFromUpVotes).toBe(true);
 	});
 
-	it("allows logged in user to down vote a site", function() {
-		const expectedId = "2-238";
-		const expectedUserId = "29";
-		let wasAddedToDownVotes = false;
-		let wasRemovedFromUpVotes = false;
-		spyOn(Websites, "update").and.callFake((query, operation) => {
-			expect(query._id).toBe(expectedId);
-			if (operation.$addToSet) {
-				expect(operation.$addToSet.downVotes).toBe(expectedUserId);
-				wasAddedToDownVotes = true;
-			}
-			if (operation.$pull) {
-				expect(operation.$pull.upVotes).toBe(expectedUserId);
-				wasRemovedFromUpVotes = true;
-			}
-		});
-		spyOn(Websites, "findOne").and.returnValue({downVotes: []});
-		const context = { userId: expectedUserId };
-
-		Websites.methods.downVote._execute(context, expectedId);
-
-		expect(wasAddedToDownVotes).toBe(true);
-        expect(wasRemovedFromUpVotes).toBe(true);
+	it("removing up vote throws exception if user is not logged in", function() {
+		const context = {};  //No userId in context simulates anonymous user
+		expect(function() {
+			Websites.methods.removeUpVote._execute(context);
+		}).toThrowError(Meteor.Error, "Must be logged in to vote [Websites.methods.unauthorized]");
 	});
 
-	it("down voting when already there removes down vote", function() {
-    		const userId = "18";
-    		let wasRemovedFromUpVotes = false;
-    		spyOn(Websites, "update").and.callFake((query, operation) => {
-    			if (operation.$pull) {
-    				wasRemovedFromUpVotes = operation.$pull.downVotes === userId;
-    			}
-    		});
-    		spyOn(Websites, "findOne").and.returnValue({downVotes: [userId]});
-    		const context = { userId: userId }
+	it("allows logged in user to down vote a site", function() {
+		const websiteId = "2-238";
+		const userId = "29";
+		let wasAddedToDownVotes = false;
+		spyOn(Websites, "update").and.callFake((query, operation) => {
+			wasAddedToDownVotes = query._id === websiteId
+				&& operation.$addToSet
+				&& operation.$addToSet.downVotes === userId;
+		});
+		const context = { userId: userId };
 
-    		Websites.methods.downVote._execute(context, userId);
-    		expect(wasRemovedFromUpVotes).toBe(true);
-    	});
+		Websites.methods.addDownVote._execute(context, websiteId);
+
+		expect(wasAddedToDownVotes).toBe(true);
+	});
 
 	it("down voting throws exception if user is not logged in", function() {
 		const context = {};  //No userId in context simulates anonymous user
 		expect(function() {
-			Websites.methods.downVote._execute(context);
-		}).toThrowError(Meteor.Error, "Must be logged in to vote [Websites.methods.downVote.unauthorized]");
+			Websites.methods.addDownVote._execute(context);
+		}).toThrowError(Meteor.Error, "Must be logged in to vote [Websites.methods.unauthorized]");
+	});
+
+	it("allows logged in user to remove down vote on a site", function() {
+		const websiteId = "18";
+		const userId = "2993";
+		let wasRemovedFromDownVotes = false;
+		spyOn(Websites, "update").and.callFake((query, operation) => {
+			wasRemovedFromDownVotes = query._id === websiteId
+							&& operation.$pull
+							&& operation.$pull.downVotes === userId;
+		});
+		const context = { userId: userId }
+
+		Websites.methods.removeDownVote._execute(context, websiteId);
+
+		expect(wasRemovedFromDownVotes).toBe(true);
+	});
+
+	it("removing down vote throws exception if user is not logged in", function() {
+		const context = {};  //No userId in context simulates anonymous user
+		expect(function() {
+			Websites.methods.removeDownVote._execute(context);
+		}).toThrowError(Meteor.Error, "Must be logged in to vote [Websites.methods.unauthorized]");
+	});
+
+	it("allows logged in user to adjust rank", function() {
+		const websiteId = "299";
+		const userId = "212";
+		let rankAdjustment = 0;
+		spyOn(Websites, "update").and.callFake((query, operation) => {
+			if (query._id === websiteId && operation.$inc && operation.$inc.rank) {
+				rankAdjustment = operation.$inc.rank;
+			}
+		});
+		const context = { userId: userId };
+
+		Websites.methods.adjustRank._execute(context, {id: websiteId, adjustment: -3});
+
+		expect(rankAdjustment).toBe(-3);
+	});
+
+	it("adjusting rank throws exception if user is not logged in", function() {
+		const context = {};
+		expect(function() {
+			Websites.methods.adjustRank._execute(context, {id: 1, adjustment: 2});
+		}).toThrowError(Meteor.Error, "Must be logged in to vote [Websites.methods.unauthorized]");
 	});
 
 	const URL_VALIDATION_MESSAGE = "Url is required [validation-error]";
