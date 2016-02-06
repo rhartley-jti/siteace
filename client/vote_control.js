@@ -34,6 +34,7 @@ Template.vote_control.events({
 		}
 
 		Websites.methods.adjustRank.call({id: this._id, adjustment: adjustment});
+		WebsiteSearch.search($("#search-box").val());
 
 		return false;// prevent the button from reloading the page
 	},
@@ -54,6 +55,7 @@ Template.vote_control.events({
 		}
 
 		Websites.methods.adjustRank.call({id: this._id, adjustment: adjustment});
+		WebsiteSearch.search($("#search-box").val());
 
 		return false;// prevent the button from reloading the page
 	}

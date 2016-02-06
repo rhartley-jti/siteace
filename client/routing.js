@@ -1,3 +1,5 @@
+Meteor.subscribe("websites");
+
 Router.configure({
 	layoutTemplate: "ApplicationLayout"
 });

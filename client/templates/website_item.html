@@ -1,12 +1,12 @@
 <template name="website_item">
         <div class="panel-body">
             <h3>
-                <a href="{{url}}" target="_blank">{{title}}</a>
+                <a href="{{url}}" target="_blank">{{{title}}}</a>
                 <a href="/site/{{_id}}" class="btn btn-default pull-right">
                     <span class="glyphicon glyphicon-comment"></span>
                 </a>
             </h3>
-            {{description}}
+            {{{description}}}
         </div>
         <div class="panel-footer">
             {{> vote_control}}

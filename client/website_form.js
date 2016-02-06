@@ -45,6 +45,8 @@ Template.website_form.events({
    			}
    			else {
    				$("#website_form").toggle('slow');
+   				event.target.reset();
+   				WebsiteSearch.search($("#search-box").val());
    			}
    		});
 

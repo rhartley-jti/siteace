@@ -27,3 +27,5 @@ reactive-dict
 momentjs:moment
 iron:router
 arkham:comments-ui
+meteorhacks:search-source
+check
