@@ -2,7 +2,11 @@
     <form>
         <div class="form-group has-feedback">
             <input id="search-box" type="text" class="form-control" placeholder="Search">
-            <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+            {{#if hasSearchText}}
+                <span id="searchClear" class="glyphicon glyphicon-remove js-search-clear"></span>
+            {{else}}
+                <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+            {{/if}}
         </div>
     </form>
 </template>
