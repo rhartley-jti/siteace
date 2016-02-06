@@ -9,10 +9,14 @@ Template.website_form.helpers({
 });
 
 Template.website_form.events({
-	"click .js-toggle-website-form": event => {
-   		$("#website_form").toggle('slow');
-   	},
-   	"submit .js-save-website-form": event => {
+	"click .js-submit-form": function(event) {
+		$("#add_website_form").submit();
+	},
+	"click .js-cancel-form": function(event) {
+		Template.instance().errors.clear();
+		$("#add_website_form").trigger('reset');
+	},
+   	"submit .js-save-website-form": function(event) {
    		const instance = Template.instance();
 		const site = {
 			title: event.target.title.value,
@@ -44,7 +48,7 @@ Template.website_form.events({
    				instance.errors.set(errors);
    			}
    			else {
-   				$("#website_form").toggle('slow');
+   				$("#website_form_dialog").modal('hide');
    				event.target.reset();
    				WebsiteSearch.search($("#search-box").val());
    			}

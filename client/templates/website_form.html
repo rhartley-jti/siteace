@@ -1,33 +1,38 @@
 <template name="website_form">
-    <a class="btn btn-default js-toggle-website-form" href="#">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-    </a>
-    <div id="website_form" class="hidden_div">
-        <form class="js-save-website-form">
-            <div class="form-group {{#if errors 'url'}}has-error has-feedback{{/if}}">
-                <label class="control-label" for="url">Site address</label>
-                <input type="url" class="form-control" id="url" aria-describedby="urlStatus" placeholder="http://www.mysite.com" />
-                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                <span id="urlStatus" class="sr-only">(error)</span>
+    <div id="website_form_dialog" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">
+                        Add Website
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <form id="add_website_form" class="js-save-website-form">
+                        <div class="form-group {{#if errors 'url'}}has-error{{/if}}">
+                            <label class="control-label" for="url">Site address</label>
+                            <input type="url" class="form-control" id="url" placeholder="http://www.mysite.com" />
+                        </div>
+                        <div class="form-group {{#if errors 'title'}}has-error{{/if}}">
+                            <label class="control-label" for="title">Title</label>
+                            <input type="text" class="form-control" id="title" placeholder="Mysite" />
+                        </div>
+                        <div class="form-group {{#if errors 'description'}}has-error{{/if}}">
+                            <label class="control-label" for="description">Description</label>
+                            <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ..." />
+                        </div>
+                        {{#each error in errors "general"}}
+                            <div class="alert alert-danger">
+                                {{error}}
+                            </div>
+                        {{/each}}
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success js-submit-form">submit</button>
+                    <button data-dismiss="modal" class="btn btn-warning js-cancel-form">cancel</button>
+                </div>
             </div>
-            <div class="form-group {{#if errors 'title'}}has-error has-feedback{{/if}}">
-                <label class="control-label" for="title">Title</label>
-                <input type="text" class="form-control" id="title" aria-describedby="titleStatus" placeholder="Mysite" />
-                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                <span id="titleStatus" class="sr-only">(error)</span>
-            </div>
-            <div class="form-group {{#if errors 'description'}}has-error has-feedback{{/if}}">
-                <label class="control-label" for="description">Description</label>
-                <input type="text" class="form-control" id="description" aria-describedby="descriptionStatus" placeholder="I found this site really useful for ..." />
-                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                <span id="descriptionStatus" class="sr-only">(error)</span>
-            </div>
-            <div class="form-group {{#if errors 'general'}}has-error has-feedback{{/if}}">
-                <button type="submit" class="btn btn-default" id="formSubmit">Submit</button>
-                {{#each error in errors "general"}}
-                    <label class="control-label" for="formSubmit">{{error}}</label>
-                {{/each}}
-            </div>
-        </form>
+        </div>
     </div>
 </template>
