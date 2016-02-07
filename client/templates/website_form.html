@@ -11,28 +11,31 @@
                     <form id="add_website_form" class="js-save-website-form">
                         <div class="form-group {{#if errors 'url'}}has-error{{/if}}" >
                             <label class="control-label" for="url">Site address</label>
-                            <input type="url" class="form-control" id="url" placeholder="http://www.mysite.com" />
+                            <input type="url" class="form-control" id="url" placeholder="http://www.mysite.com" {{getDisabled}} />
+                            <!--<button type="button" class="btn btn-success js-load-site">Load</button>-->
                         </div>
                         <div class="form-group {{#if errors 'title'}}has-error{{/if}}">
                             <label class="control-label" for="title">Title</label>
-                            <input type="text" class="form-control" id="title" placeholder="Mysite" />
+                            <input type="text" class="form-control" id="title" placeholder="Mysite" {{getDisabled}} />
                         </div>
                         <div class="form-group {{#if errors 'description'}}has-error{{/if}}">
                             <label class="control-label" for="description">Description</label>
-                            <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ..." />
-                        </div>
-                        <div class="alert alert-warning">
-                            Loading data...
+                            <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ..." {{getDisabled}} />
                         </div>
                         {{#each error in errors "general"}}
-                            <div class="alert alert-danger">
+                            <div class="alert alert-block alert-danger">
                                 {{error}}
                             </div>
                         {{/each}}
+                        {{#if isLoadingSiteData}}
+                            <div class="alert alert-block alert-warning">
+                                Loading data...
+                            </div>
+                        {{/if}}
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success js-submit-form">submit</button>
+                    <button id="submitButton" class="btn btn-success js-submit-form">submit</button>
                     <button data-dismiss="modal" class="btn btn-warning js-cancel-form">cancel</button>
                 </div>
             </div>

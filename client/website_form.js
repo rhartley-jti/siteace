@@ -6,17 +6,11 @@ Template.website_form.helpers({
 	errors(fieldName) {
 		return Template.instance().errors.get(fieldName);
 	},
+	getDisabled() {
+		return Session.get("loadingSiteData") ? "disabled" : "";
+	},
 	isLoadingSiteData() {
-		return true;
-//		return Session.get("loadingSiteData");
-	},
-	siteUrl() {
-//		return Session.get("siteUrl");
-		return "http://youtube.com";
-	},
-	siteData() {
-//		return Session.get("siteData");
-		return {title: "Test Title", description: "Test description"};
+		return Session.get("loadingSiteData");
 	}
 });
 
@@ -68,5 +62,52 @@ Template.website_form.events({
 
 
    		return false;// stop the form submit from reloading the page
+   	},
+   	"click .js-load-site": function(event) {
+   		loadWebSite($("#url").val());
+   	},
+   	"shown.bs.modal #website_form_dialog": function(event) {
+   		$("#url").focus();
+   		var url = $("#url").val();
+   		if (url) {
+   			loadWebSite(url);
+   		}
+   	},
+   	"blur #url": function(event) {
+   		loadWebSite($("#url").val());
    	}
 });
+
+function loadWebSite(url) {
+   	const instance = Template.instance();
+	Session.set("loadingSiteData", true);
+	Websites.methods.getWebsiteData.call(url, function(error, result) {
+		const errors = {
+			general: [],
+			url: [],
+			title: [],
+			description: []
+		};
+		if (!error) {
+			$("#title").val(result.title);
+			$("#description").val(result.description);
+			$("#submitButton").focus();
+		}
+		else {
+			errors.general.push("Error loading site data");
+            instance.errors.set(errors);
+			setTimeout(function() {
+				if ($("#url").val()) {
+					$("#title").focus();
+				}
+				else {
+					$("#url").focus();
+				}
+			}, 500);
+			setTimeout(function() {
+				instance.errors.set({general: [],url: [],title: [],description: []});
+			}, 2000);
+		}
+		Session.set("loadingSiteData", false);
+	});
+}
