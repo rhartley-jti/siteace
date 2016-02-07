@@ -29,3 +29,6 @@ iron:router
 arkham:comments-ui
 meteorhacks:search-source
 check
+http
+ejson
+mrt:cheerio

@@ -5,8 +5,23 @@ Template.navbar.helpers({
 });
 
 Template.navbar.events({
-	"click .js-add-website": function(event) {
-		$("#url").val($("#navUrl").val());
+	"submit .js-add-site-submit": function(event) {
+		var url = $("#navUrl").val();
+		//Session.set("siteUrl", $("#navUrl").val());
+		//Session.set("loadingSiteData", true);
 		$("#website_form_dialog").modal("show");
+		Websites.methods.getWebsiteData.call(url, function(error, result) {
+			if (!error) {
+				console.log(result);
+				//Session.set("siteData", result)
+			}
+			else {
+				console.log(error);
+			}
+			//Session.set("loadingSiteData", false);
+		});
+
+		return false;
 	}
 });
+

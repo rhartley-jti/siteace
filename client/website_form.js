@@ -5,6 +5,18 @@ Template.website_form.onCreated(function() {
 Template.website_form.helpers({
 	errors(fieldName) {
 		return Template.instance().errors.get(fieldName);
+	},
+	isLoadingSiteData() {
+		return true;
+//		return Session.get("loadingSiteData");
+	},
+	siteUrl() {
+//		return Session.get("siteUrl");
+		return "http://youtube.com";
+	},
+	siteData() {
+//		return Session.get("siteData");
+		return {title: "Test Title", description: "Test description"};
 	}
 });
 

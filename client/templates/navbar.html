@@ -14,12 +14,14 @@
                 </a>
             </div>
             {{#if canAddSite}}
-                <form class="navbar-form navbar-left">
+                <form class="navbar-form navbar-left js-add-site-submit">
                     <div class="form-group">
-                        <input id="navUrl" type="text" class="form-control" placeholder="http://www.mysite.com">
+                        <input id="navUrl" type="text" class="form-control" value="http://youtube.com" placeholder="http://www.mysite.com">
                     </div>
-                    <div class="btn btn-default js-add-website">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    <div class="form-group">
+                        <button type="submit" class="form-control">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        </button>
                     </div>
                 </form>
             {{/if}}

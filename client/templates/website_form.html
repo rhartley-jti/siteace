@@ -9,7 +9,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="add_website_form" class="js-save-website-form">
-                        <div class="form-group {{#if errors 'url'}}has-error{{/if}}">
+                        <div class="form-group {{#if errors 'url'}}has-error{{/if}}" >
                             <label class="control-label" for="url">Site address</label>
                             <input type="url" class="form-control" id="url" placeholder="http://www.mysite.com" />
                         </div>
@@ -20,6 +20,9 @@
                         <div class="form-group {{#if errors 'description'}}has-error{{/if}}">
                             <label class="control-label" for="description">Description</label>
                             <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ..." />
+                        </div>
+                        <div class="alert alert-warning">
+                            Loading data...
                         </div>
                         {{#each error in errors "general"}}
                             <div class="alert alert-danger">
